@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+    <release version="1.1.1" versioncode="17">
+        <change>Upgraded thirdparty libs</change>
+        <change>Added French translation</change>
+    </release>
+    <release version="1.1.0" versioncode="16">
+        <change>Added notification filtering (may be buggy)</change>
+        <change>Fixed settings crash</change>
+        <change>Added support for Klyph</change>
+        <change>Updated Hungarian translation</change>
+        <change>Added Spanish translation</change>
+        <change>Updated to Facebook SDK 3.5.1</change>
+        <change>Added Support for Atrium</change>
+    </release>
+    <release version="1.0.9" versioncode="12">
+        <change>Changed icons and name to be in compliance with Facebook's policies</change>
+        <change>Added Notification clearing, this may not update immediately in the extension and may not clear all notifications.</change>
+        <change>Refactored code</change>
+        <change>Added German, Italian. Dutch translations</change>
+        <change>Fixed log-in crash when backing out of the Facebook Activity</change>
+    </release>
+    <release version="1.0.7" versioncode="9">
+        <change>Do not show if count is 0 in condensed mode</change>
+        <change>Grouped preferences in categories</change>
+        <change>Added messenger option to open messages</change>
+        <change>Added Preference to update when screen turns on</change>
+    </release>
+    <release version="1.0.6" versioncode="8">
+        <change>Update icons thanks to John Seidner</change>
+        <change>Added Fast for Facebook app</change>
+        <change>Added Display Styles preference</change>
+        <change>Added Include Preview preference</change>
+        <change>Fixed some rare login crashes</change>
+        <change>Decreased data usage</change>
+        <change>Added more requested languages on Crowdin.net</change>
+        <change>Do not show if message/notification count is 0</change>
+    </release>
+    <release version="1.0.5" versioncode="7">
+        <change>Added pro versions of Seesmic, FriendCaster</change>
+        <change>Added Hungarian localization</change>
+        <change>Added preference to launch mobile site instead of regular site</change>
+    </release>
+    <release version="1.0.4" versioncode="6">
+        <change>Fixed force close issue on Changelog</change>
+    </release>
+    <release version="1.0.3" versioncode="5">
+        <change>Added more options to configured apps</change>
+        <change>Added notification/message body</change>
+        <change>Added in-app donations</change>
+        <change>Added link to issues page on Bit Bucket, Can now report bugs, request features</change>
+    </release>
+    <release version="1.0.2" versioncode="3">
+        <change>Added option to choose what to launch, for now it should work with Official Facebook app, Chrome, and Browser. Support for more apps is on the way (let me know which you need).</change>
+        <change>Added BILLING permission (not used right now but maybe in the future)</change>
+    </release>  
+    <release version="1.0.1" versioncode="2">
+        <change>Fixed login issues, now you will get a second dialog to verify the manage notifications permission</change>
+        <change>Added ACCESS NETWORK STATE permission to check if there is a data connection before doing operations</change>
+        <change>Added preference to always show extension</change>
+    </release>  
+    <release version="1.0" versioncode="1">
+        <change>Initial Release</change>
+    </release>  
+</changelog>

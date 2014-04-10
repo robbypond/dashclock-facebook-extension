@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="not_logged_in">Niet ingelogd</string>
+    <string name="logged_in_as">Ingelogd als</string>
+    <string name="title_notification_types">Notificatie types</string>
+
+    <string-array name="notification_types">
+        <item>Berichten</item>
+        <item>Notificaties</item>
+    </string-array>
+
+    <string name="extension_description">Bekijk je laatste berichten of notificaties van Facebook</string>
+    <string name="extension_title">Facebook Updates</string>
+  
+    <string name="about_body">
+<![CDATA[
+        Veel dank aan:<br>
+        <b><a href="http://code.google.com/p/dashclock/">DashClock</a></b><i> door Roman Nurik</i><br>
+        <b><a href="https://github.com/MartinvanZ/Inscription">Inscription</a></b><i> door Martin van Zuilekom</i><br>
+        <b><a href="https://github.com/facebook/facebook-android-sdk">Facebook Android SDK</a></b><i> door Facebook</i><br>
+        <b>John Seidner</b> voor de bijgewerkte pictogrammen<br>
+        <b>Niek Haarman</b> voor de Nederlandse vertaling<br>
+        <b>Andrea Baccega</b> voor de Italiaanse vertaling<br>
+        <b>Goddchen</b> voor de Duitse vertaling<br>
+        <b>Hunyady Márton</b> for the Hungarian translation<br>
+        <b>Jonathan Búcaro</b> for the Spanish translation<br>
+        <b>lolobosse</b> for the French translation<br><br>
+        <a href="https://play.google.com/store/apps/details?id=com.brennasoft.dashclockfacebookextension">Beoordelen</a><br>
+        <a href="https://bitbucket.org/rpond/dashclockfacebookextension/">Meld fouten/vraag features aan</a><br>
+        <a href="http://play.google.com/store/apps/developer?id=BrennaSoft">Meer apps van Brennasoft</a><br>
+        <i><a href="mailto:support@brennasoft.com?subject=DashClockFacebookExtension">support@brennasoft.com</a></i><br>
+    ]]>
+    </string>
+    <string name="close">Sluiten</string>
+    <string name="about">Over</string>
+    <string name="changelog">Wijzigingen</string>
+    <string name="title_show_always">Extensie altijd weergeven</string>
+    <string name="summary_show_always">Extensie altijd weergeven, ook als er geen notificaties zijn</string>
+    <string name="title_app">Kies je app</string>
+    <string name="donate">Doneren</string>
+
+    <string-array name="donate_texts">
+        <item>Haal een koffie voor me (supermarkt) - $1</item>
+        <item>Haal een koffie voor me (Starbucks) - $3</item>
+        <item>Haal een biertje voor me - $5</item>
+    </string-array>
+
+    <string name="donate_header">
+<![CDATA[<h4>Waarom doneren?</h4>
+Het zou helemaal te gek zijn een een lach op mijn gezicht toveren.<br>
+Ook motiveert het mij om door te gaan en de app te verbeteren.<br>
+Bedankt!
+]]>
+    </string>
+  
+    <plurals name="message">
+        <item quantity="one">%d Bericht</item>
+        <item quantity="other">%d berichten</item>
+    </plurals>
+    <plurals name="notification">
+        <item quantity="one">%d Notificatie</item>
+        <item quantity="other">%d Notificaties</item>
+    </plurals>
+
+    <string name="message_condensed">Mail: <xliff:g id="mailCount">%d</xliff:g></string>
+    <string name="updates_condensed">Updates: <xliff:g id="updateCount">%d</xliff:g></string>
+    <string name="expires">De Facebook sessie verloopt vandaag. Log opnieuw in via de voorkeuren.</string>
+    <string name="title_mobile_site">Use Mobile Site</string>
+    <string name="summary_mobile_site">Use Mobile when viewing with browser</string>
+    <string name="title_display_style">Display Style</string>
+
+    <string-array name="display_style_names">
+        <item>Default</item>
+        <item>Condensed</item>
+    </string-array>
+
+    <string name="title_include_preview">Include Preview</string>
+    <string name="summary_include_preview">Include preview of latest update on lockscreen</string>
+    <string name="pref_category_display">Display</string>
+    <string name="pref_category_app">Launch App</string>
+    <string name="login_failure">Login Failed, Please check your network connection and try again.</string>
+    <string name="title_clear_notifications">Clear notifications</string>
+    <string name="title_launch_messenger_on_message">Launch Messenger on Message</string>
+    <string name="title_update_on_screen_on">Update on screen on</string>
+    <string name="summary_update_on_screen_on">This may cause increased data usage.</string>
+    <string name="clear_summary">This may not update immediately in the extension and may not clear all notifications.</string>
+    <string name="title_notification_applications">Applications included</string>
+    <string name="pref_category_filter">Notification Filter</string>
+    <string name="summary_filter_notifications">Filter Notifications by Application</string>
+    <string name="title_filter_notifications">Filter Notifications</string>
+    <string name="summary_website_notifications">Open notifications when using browser</string>
+    <string name="title_website_notifications">Use Notifications Page</string><string name="app_icon">App Icon</string>
+
+    <string-array name="application_names">
+        <item>Events</item>
+        <item>Likes</item>
+        <item>Feed Comments</item>
+        <item>Places</item>
+        <item>Links</item>
+        <item>Photos</item>
+        <item>Videos</item>
+        <item>Pages</item>
+        <item>Wall</item>
+    </string-array>
+</resources>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="not_logged_in">No se ha iniciado sesión</string>
+    <string name="logged_in_as">Sesión Iniciada Como</string>
+    <string name="title_notification_types">Tipos de Notificación</string>
+
+    <string-array name="notification_types">
+        <item>Mensajes</item>
+        <item>Notificaciones</item>
+    </string-array>
+
+    <string name="extension_description">Ver últimos mensajes o notificaciones de Facebook</string>
+    <string name="extension_title">Actualizaciones de Facebook</string>
+    <string name="about_body">
+<![CDATA[
+        Agradeciendo a:<br>
+        <b><a href="http://code.google.com/p/dashclock/">DashClock</a></b><i> por Roman Nurik</i><br>
+        <b><a href="https://github.com/MartinvanZ/Inscription">Inscription</a></b><i> por Martin van Zuilekom</i><br>
+        <b><a href="https://github.com/facebook/facebook-android-sdk">Facebook Android SDK</a></b><i> por Facebook</i><br>
+        <b>John Seidner</b> por los iconos actualizados<br>
+        <b>Niek Haarman</b> por la traducción a Holandéz<br>
+        <b>Andrea Baccega</b> por la traducción a Italiano<br>
+        <b>Goddchen</b> por la traducción a Alemán<br>
+        <b>Hunyady Márton</b> for the Hungarian translation<br>
+        <b>Jonathan Búcaro</b> for the Spanish translation<br>
+        <b>lolobosse</b> for the French translation<br><br>
+        <a href="https://play.google.com/store/apps/details?id=com.brennasoft.dashclockfacebookextension">Calificar/Comentar</a><br>
+        <a href="https://bitbucket.org/rpond/dashclockfacebookextension/">Nuevas Solicitudes/Reportar Inconvenientes</a><br>
+        <a href="http://play.google.com/store/apps/developer?id=BrennaSoft">Más aplicaciones por Brennasoft</a><br>
+        <i><a href="mailto:support@brennasoft.com?subject=DashClockFacebookExtension">support@brennasoft.com</a></i><br>
+    ]]>
+    </string>
+    <string name="close">Cerrar</string>
+    <string name="about">Acerca de</string>
+    <string name="changelog">Lista de Cambios</string>
+    <string name="title_show_always">Mostrar siempre la extensión</string>
+    <string name="summary_show_always">Mostrar siempre la extensión, incluso cuando no existan notificaciones</string>
+    <string name="title_app">Elige aplicación preferida</string>
+    <string name="donate">Apoyo/Donaciones</string>
+
+    <string-array name="donate_texts">
+        <item>Invitame a un café (7–11) - $1</item>
+        <item>Invitame a un café (Starbucks) - $3</item>
+        <item>Invitame a una cerveza - $5</item>
+    </string-array>
+
+    <string name="donate_header">
+<![CDATA[<h4>¿Por qué Donar?</h4>
+Alegraría por completo mi día y pondrías una sonrisa en mi rostro.<br>
+Me motivará a seguir adelante y mejorar esta aplicación.<br>
+Muchas gracias!
+]]>
+    </string>
+
+    <plurals name="message">
+        <item quantity="one">1 Mensaje</item>
+        <item quantity="other">%d Mensajes</item>
+    </plurals>
+    <plurals name="notification">
+        <item quantity="one">1 Notificación</item>
+        <item quantity="other">%d Notificaciones</item>
+    </plurals>
+
+    <string name="message_condensed">Correo: <xliff:g id="mailCount">%d</xliff:g></string>
+    <string name="updates_condensed">Actualizaciones: <xliff:g id="updateCount">%d</xliff:g></string>
+    <string name="expires">La sesión de Facebook expira el día de hoy, Por favor inicia nuevamente sesión desde las configuraciones</string>
+    <string name="title_mobile_site">Usar Sitio Móvil</string>
+    <string name="summary_mobile_site">Usa el sitio Móvil cuando se visualiza en el navegador</string>
+    <string name="title_display_style">Estilo de Pantalla</string>
+
+    <string-array name="display_style_names">
+        <item>Por Defecto</item>
+        <item>Condensado</item>
+    </string-array>
+
+    <string name="title_include_preview">Incluir Vista Previa</string>
+    <string name="summary_include_preview">Muestra una vista previa de la última actualización en la pantalla de bloqueo</string>
+    <string name="pref_category_display">Pantalla</string>
+    <string name="pref_category_app">Ejecutar aplicación</string>
+    <string name="login_failure">Inicio de sesión fallido, Favor revisar las conexiones de red e intentar nuevamente.</string>
+    <string name="title_clear_notifications">Limpiar notificaciones</string>
+    <string name="title_launch_messenger_on_message">Ejecutar Messenger al recibir un mensaje</string>
+    <string name="title_update_on_screen_on">Actualizaciones en pantalla</string>
+    <string name="summary_update_on_screen_on">Esto puede aumentar el uso del plan de datos.</string>
+    <string name="clear_summary">Puede que no se actualice inmediatamente en la extensión y puede no eliminar todas las notificaciones.</string>
+    <string name="title_notification_applications">Applications included</string>
+    <string name="pref_category_filter">Notification Filter</string>
+    <string name="summary_filter_notifications">Filter Notifications by Application</string>
+    <string name="title_filter_notifications">Filter Notifications</string>
+    <string name="summary_website_notifications">Open notifications when using browser</string>
+    <string name="title_website_notifications">Use Notifications Page</string><string name="app_icon">App Icon</string>
+
+    <string-array name="application_names">
+        <item>Events</item>
+        <item>Likes</item>
+        <item>Feed Comments</item>
+        <item>Places</item>
+        <item>Links</item>
+        <item>Photos</item>
+        <item>Videos</item>
+        <item>Pages</item>
+        <item>Wall</item>
+    </string-array>
+
+</resources>

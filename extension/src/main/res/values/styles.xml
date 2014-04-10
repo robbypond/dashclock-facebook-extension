@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- API 14 theme customizations can go here. -->
+    </style>
+    
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <!-- List views and list items -->
+    <style name="ListItemContainerBase">
+        <item name="android:minHeight">?android:listPreferredItemHeight</item>
+    </style>
+
+     <!-- SimpleListItems are items whose containers provides the appropriate padding, and
+         usually the container and content are a single view. -->
+    <style name="SimpleListItem" parent="ListItemContainerBase">
+        <item name="android:paddingLeft">?android:listPreferredItemPaddingLeft</item>
+        <item name="android:paddingRight">?android:listPreferredItemPaddingLeft</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+    
+    <!-- ComplexListItems are items whose content must provide the padding. -->
+    <style name="ComplexListItem" parent="ListItemContainerBase" />
+</resources>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="not_logged_in">Nem vagy bejelentkezve</string>
+    <string name="logged_in_as">Bejelentkezve</string>
+    <string name="title_notification_types">Értesítések típusa</string>
+
+    <string-array name="notification_types">
+        <item>Üzenetek</item>
+        <item>Értesítések</item>
+    </string-array>
+
+    <string name="extension_description">Megjeleníti a legfrissebb üzeneteidet és értesítéseidet a Facebookról.</string>
+    <string name="extension_title">Facebook értesítések</string>
+    <string name="about_body">
+<![CDATA[
+        Nagy köszönet:<br>
+        <b><a href="http://code.google.com/p/dashclock/">DashClock</a></b><i>: Roman Nurik</i><br>
+        <b><a href="https://github.com/MartinvanZ/Inscription">Inscription</a></b><i>: Martin van Zuilekom</i><br>
+        <b><a href="https://github.com/facebook/facebook-android-sdk">Facebook Android SDK</a></b><i>: Facebook</i><br>
+        <b>John Seidner</b>: a frissített ikonokért<br>
+        <b>Niek Haarman</b>: a holland fordításért<br>
+        <b>Andrea Baccega</b>: az olasz fordításért<br>
+        <b>Goddchen</b>: a német fordításért<br>
+        <b>Hunyady Márton</b> for the Hungarian translation<br>
+        <b>Jonathan Búcaro</b> for the Spanish translation<br>
+        <b>lolobosse</b> for the French translation<br><br>
+        <a href="https://play.google.com/store/apps/details?id=com.brennasoft.dashclockfacebookextension">Értékelés és véleményezés</a><br>
+        <a href="https://bitbucket.org/rpond/dashclockfacebookextension/">Kérések és hibabejelentés</a><br>
+        <a href="http://play.google.com/store/apps/developer?id=BrennaSoft">A Brennasoft többi alkalmazása</a><br>
+        <i><a href="mailto:support@brennasoft.com?subject=DashClockFacebookExtension">support@brennasoft.com</a></i><br>
+    ]]>
+    </string>
+    <string name="close">Bezárás</string>
+    <string name="about">Névjegy</string>
+    <string name="changelog">Változások listája</string>
+    <string name="title_show_always">Mindig mutassa a kiegészítést</string>
+    <string name="summary_show_always">Akkor is mutassa a kiegészítést, ha nincs új értesítés</string>
+    <string name="title_app">Használt alkalmazás beállítása</string>
+    <string name="donate">Támogatás/Adományozás</string>
+
+    <string-array name="donate_texts">
+        <item>Vegyél nekem egy olcsóbb kávét (7–11) - 1$</item>
+        <item>Vegyél nekem egy drágább kávét (Starbucks) - 3$</item>
+        <item>Vegyél nekem egy jófajta sört - 5$</item>
+    </string-array>
+
+    <string name="donate_header">
+<![CDATA[<h4>Miért adományozz?</h4>
+Mert ezzel feldobod a napomat és mosolyt csalsz az arcomra!<br>
+Ez motivál engem, hogy még jobb alkalmazást készítsek.<br>
+Köszönöm!
+]]>
+    </string>
+
+    <plurals name="message">
+        <item quantity="other">%d üzenet</item>
+    </plurals>
+    <plurals name="notification">
+        <item quantity="other">%d értesítés</item>
+    </plurals>
+
+    <string name="message_condensed">Üzenetek: <xliff:g id="mailCount">%d</xliff:g></string>
+    <string name="updates_condensed">Értesítések: <xliff:g id="updateCount">%d</xliff:g></string>
+    <string name="expires">A Facebook munkafolyamat hamarosan lejár, kérlek jelentkezz be újra a beállításokban!</string>
+    <string name="title_mobile_site">Mobil verzió használata</string>
+    <string name="summary_mobile_site">Mobil verzió használata a böngészőben.</string>
+    <string name="title_display_style">Megjelenítési mód</string>
+
+    <string-array name="display_style_names">
+        <item>Alapértelmezett</item>
+        <item>Csökkentett méret</item>
+    </string-array>
+
+    <string name="title_include_preview">Előnézet hozzáadása</string>
+    <string name="summary_include_preview">A legújabb értesítés előnézetének hozzáadása a záróképernyőhöz</string>
+    <string name="pref_category_display">Megjelenítés</string>
+    <string name="pref_category_app">Alkalmazás indítása</string>
+    <string name="login_failure">A bejelentkezés nem sikerült. Ellenőrizd a hálózati kapcsolatot és próbáld újra!</string>
+    <string name="title_clear_notifications">Értesítések törlése</string>
+    <string name="title_launch_messenger_on_message">Messenger indítása új üzenet érkezésekor</string>
+    <string name="title_update_on_screen_on">Frissítés a képernyő bekapcsolásakor</string>
+    <string name="summary_update_on_screen_on">Ez növelheti az adatforgalmat.</string>
+    <string name="clear_summary">Előfordulhat, hogy nem fog azonnal frissülni a bővítmény, vagy nem törli egyből az értesítéseket.</string>
+    <string name="title_notification_applications">Értesítések típusai</string>
+    <string name="pref_category_filter">Notification Filter</string>
+    <string name="summary_filter_notifications">Értesítések szűrése típus alapján</string>
+    <string name="title_filter_notifications">Értesítések szűrése</string>
+    <string name="summary_website_notifications">Értesítések megnyitása böngésző használatakor</string>
+    <string name="title_website_notifications">Értesítések oldal használata</string>
+    <string name="app_icon">Alkalmazásikon</string>
+
+    <string-array name="application_names">
+        <item>Események</item>
+        <item>Kedvelések</item>
+        <item>Hozzászólások</item>
+        <item>Helyek</item>
+        <item>Hivatkozások</item>
+        <item>Fényképek</item>
+        <item>Videók</item>
+        <item>Oldalak</item>
+        <item>Hírfolyam</item>
+    </string-array>
+
+</resources>

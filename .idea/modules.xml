@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/dashclock-facebook-extension.iml" filepath="$PROJECT_DIR$/dashclock-facebook-extension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/extension/extension.iml" filepath="$PROJECT_DIR$/extension/extension.iml" />
+      <module fileurl="file://$PROJECT_DIR$/facebook-android-sdk/facebook-android-sdk.iml" filepath="$PROJECT_DIR$/facebook-android-sdk/facebook-android-sdk.iml" />
+    </modules>
+  </component>
+</project>
+

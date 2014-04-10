@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/about"/>
+    <item
+        android:id="@+id/action_changelog"
+        android:orderInCategory="101"
+        android:title="@string/changelog">
+    </item>
+
+    <item
+        android:id="@+id/action_donate"
+        android:orderInCategory="102"
+        android:title="@string/donate"/>
+</menu>

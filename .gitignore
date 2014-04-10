@@ -1,0 +1,6 @@
+.gradle
+.crashlytics_data
+/local.properties
+/.idea/workspace.xml
+/.DS_Store
+/keystore.properties

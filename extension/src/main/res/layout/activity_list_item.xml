@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ComplexListItem"
+    android:layout_width="match_parent"
+    android:layout_height="?android:listPreferredItemHeight" >
+
+    <ImageView
+        android:id="@+id/app_icon"
+        style="@style/SimpleListItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:contentDescription="@string/app_icon"/>
+
+    <TextView
+        android:id="@+id/app_name"
+        style="@style/SimpleListItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

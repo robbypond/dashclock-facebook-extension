@@ -1,0 +1,102 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Preference
+        android:key="@string/pref_key_name"
+        android:summary="@string/not_logged_in"
+        android:title="@string/logged_in_as" />
+
+    <MultiSelectListPreference
+        android:defaultValue="@array/notification_type_values"
+        android:dialogTitle="@string/title_notification_types"
+        android:entries="@array/notification_types"
+        android:entryValues="@array/notification_type_values"
+        android:key="@string/pref_key_notification_types"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@android:string/ok"
+        android:title="@string/title_notification_types" />
+
+    <CheckBoxPreference
+        android:key="@string/pref_key_update_on_screen_on"
+        android:summary="@string/summary_update_on_screen_on"
+        android:title="@string/title_update_on_screen_on" />
+
+    <PreferenceCategory
+        android:key="@string/pref_category_app"
+        android:title="@string/pref_category_app" >
+        <com.brennasoft.facebookdashclockextension.preference.AppPreference
+            android:key="@string/pref_key_app"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/title_app" />
+
+        <Preference
+            android:defaultValue="@string/facebook_component_name"
+            android:key="@string/pref_key_app_component_name" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_mobile_site"
+            android:summary="@string/summary_mobile_site"
+            android:title="@string/title_mobile_site" />
+
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="@string/pref_key_website_notifications"
+                android:summary="@string/summary_website_notifications"
+                android:title="@string/title_website_notifications" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/pref_key_clear_notifications"
+            android:title="@string/title_clear_notifications" android:summary="@string/clear_summary"/>
+        <CheckBoxPreference
+            android:key="@string/pref_key_launch_messenger_on_message"
+            android:title="@string/title_launch_messenger_on_message" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="@string/pref_category_display"
+        android:title="@string/pref_category_display" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/pref_key_show_always"
+            android:summary="@string/summary_show_always"
+            android:title="@string/title_show_always" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_display_style"
+            android:entries="@array/display_style_names"
+            android:entryValues="@array/display_style_values"
+            android:key="@string/pref_key_display_style"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@android:string/ok"
+            android:title="@string/title_display_style" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_include_preview"
+            android:summary="@string/summary_include_preview"
+            android:title="@string/title_include_preview" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:key="@string/pref_category_filter"
+            android:title="@string/pref_category_filter" >
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="@string/pref_key_filter_notifications"
+                android:summary="@string/summary_filter_notifications"
+                android:title="@string/title_filter_notifications" />
+
+        <MultiSelectListPreference
+                android:dialogTitle="@string/title_notification_applications"
+                android:entries="@array/application_names"
+                android:entryValues="@array/application_ids"
+                android:key="@string/pref_key_notification_applications"
+                android:negativeButtonText="@null"
+                android:positiveButtonText="@android:string/ok"
+                android:title="@string/title_notification_applications"
+                android:defaultValue="@array/application_ids"/>
+    </PreferenceCategory>
+</PreferenceScreen>

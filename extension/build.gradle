@@ -1,0 +1,48 @@
+apply plugin: 'android'
+apply plugin: 'crashlytics'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '19.0.3'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    def Properties versionProps = new Properties()
+    versionProps.load(new FileInputStream(file('version.properties')))
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 19
+        versionName versionProps['name']
+        versionCode versionProps['code'].toInteger()
+    }
+    signingConfigs {
+        release {
+            def Properties keyProps = new Properties()
+            keyProps.load(new FileInputStream(file('../keystore.properties')))
+            storeFile file(keyProps["store"])
+            keyAlias keyProps["alias"]
+            storePassword keyProps["storePass"]
+            keyPassword keyProps["pass"]
+        }
+    }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v13:19.+'
+    compile 'com.crashlytics.android:crashlytics:1.+'
+    compile 'com.jakewharton.timber:timber:2.2.2'
+    compile 'com.github.gabrielemariotti.changeloglib:library:1.4.0'
+    compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+    compile project(':facebook-android-sdk')
+}
