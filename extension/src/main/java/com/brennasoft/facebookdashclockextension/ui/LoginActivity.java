@@ -66,7 +66,7 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
 	}
 	
 	@Override
-	public void call(Session session, SessionState state, Exception exception) {
+	public void call(final Session session, SessionState state, Exception exception) {
 		final Editor e = mPreferences.edit();
 		final String nameKey = "pref_key_name";
 		final String loggedInKey = "pref_key_logged_in";
@@ -79,7 +79,7 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
                         e.putString(nameKey, user.getName());
                         e.putBoolean(loggedInKey, true);
                         mSharedPreferenceSaver.savePreferences(e, true);
-                        requestNotificationAccess();
+                        requestNotificationAccess(session);
                         setResult(SettingsActivity.FACEBOOK_LOGIN_COMPLETE);
                     } else {
                         setResult(SettingsActivity.FACEBOOK_LOGIN_FAILED);
@@ -94,8 +94,8 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
 		}
 	}
 
-	void requestNotificationAccess() {
-		Session.getActiveSession().requestNewPublishPermissions(
+	void requestNotificationAccess(Session session) {
+		session.requestNewPublishPermissions(
                 new Session.NewPermissionsRequest(this, Arrays.asList("manage_notifications")));
 	}
 }
