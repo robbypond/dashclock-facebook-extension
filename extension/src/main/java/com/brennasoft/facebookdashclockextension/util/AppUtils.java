@@ -12,54 +12,94 @@ import java.util.List;
 public class AppUtils {
 
 	public static final HashMap<String, Intent> IntentMap = new HashMap<String, Intent>() {{
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("fplusfree://notifications"));
-		intent.setPackage("uk.co.senab.blueNotifyFree");
-		put("uk.co.senab.blueNotifyFree", intent);
-		intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("fplus://notifications"));
-		intent.setPackage("uk.co.senab.blueNotify");
-		put("uk.co.senab.blueNotify", intent);
-		intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("http://www.facebook.com/notifications"));
-		intent.setPackage("com.seesmic");
-		put("com.seesmic", intent);
-		intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("http://www.facebook.com/notifications"));
-		intent.setPackage("com.seesmic.pro");
-		put("com.seesmic.pro", intent);
-		intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("facebook://notifications"));
-		intent.setPackage("com.facebook.katana");
-		put("com.facebook.katana", intent);
-		intent = new Intent();
-		intent.setPackage("com.flipster");
-		put("com.flipster", intent);
-		intent = new Intent();
-		intent.setPackage("com.flipster.pro");
-		put("com.flipster.pro", intent);
-		intent = new Intent(Intent.ACTION_MAIN);
-		intent.setPackage("app.fastfacebook.com");
-		put("app.fastfacebook.com", intent);
-		intent = new Intent(Intent.ACTION_MAIN);
-		intent.setPackage("app.fastpro.com");
-		put("app.fastpro.com", intent);
-        intent = new Intent(Intent.ACTION_MAIN);
-        intent.setPackage("com.abewy.klyph_beta");
-        put("com.abewy.klyph_beta", intent);
-        intent = new Intent(Intent.ACTION_MAIN);
-        intent.setPackage("com.abewy.klyph_beta.old");
-        put("com.abewy.klyph_beta.old", intent);
-        intent = new Intent(Intent.ACTION_MAIN);
-        intent.setPackage("com.abewy.klyph.pro");
-        put("com.abewy.klyph.pro", intent);
-        intent = new Intent(Intent.ACTION_MAIN);
-        intent.setPackage("com.radiantbits.atrium");
-        put("com.radiantbits.atrium", intent);
-		intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("http://www.facebook.com"));
-		put("browsers", intent);
-	}};
+        addFriendCaster();
+        addSeesmic();
+        addFacebook();
+        addFlipster();
+        addFast();
+        addKlyph();
+        addAtrium();
+        addBrowsers();
+	}
+
+        private void addFriendCaster() {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("fplusfree://notifications"));
+            intent.setPackage("uk.co.senab.blueNotifyFree");
+            put("uk.co.senab.blueNotifyFree", intent);
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("fplus://notifications"));
+            intent.setPackage("uk.co.senab.blueNotify");
+            put("uk.co.senab.blueNotify", intent);
+        }
+
+        private void addSeesmic() {
+            Intent intent;
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://www.facebook.com/notifications"));
+            intent.setPackage("com.seesmic");
+            put("com.seesmic", intent);
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://www.facebook.com/notifications"));
+            intent.setPackage("com.seesmic.pro");
+            put("com.seesmic.pro", intent);
+        }
+
+        private void addFacebook() {
+            Intent intent;
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("facebook://notifications"));
+            intent.setPackage("com.facebook.katana");
+            put("com.facebook.katana", intent);
+        }
+
+        private void addFlipster() {
+            Intent intent;
+            intent = new Intent();
+            intent.setPackage("com.flipster");
+            put("com.flipster", intent);
+            intent = new Intent();
+            intent.setPackage("com.flipster.pro");
+            put("com.flipster.pro", intent);
+        }
+
+        private void addFast() {
+            Intent intent;
+            intent = new Intent(Intent.ACTION_MAIN);
+            intent.setPackage("app.fastfacebook.com");
+            put("app.fastfacebook.com", intent);
+            intent = new Intent(Intent.ACTION_MAIN);
+            intent.setPackage("app.fastpro.com");
+            put("app.fastpro.com", intent);
+        }
+
+        private void addKlyph() {
+            Intent intent;
+            intent = new Intent(Intent.ACTION_MAIN);
+            intent.setPackage("com.abewy.klyph_beta");
+            put("com.abewy.klyph_beta", intent);
+            intent = new Intent(Intent.ACTION_MAIN);
+            intent.setPackage("com.abewy.klyph_beta.old");
+            put("com.abewy.klyph_beta.old", intent);
+            intent = new Intent(Intent.ACTION_MAIN);
+            intent.setPackage("com.abewy.klyph.pro");
+            put("com.abewy.klyph.pro", intent);
+        }
+
+        private void addAtrium() {
+            Intent intent;
+            intent = new Intent(Intent.ACTION_MAIN);
+            intent.setPackage("com.radiantbits.atrium");
+            put("com.radiantbits.atrium", intent);
+        }
+
+        private void addBrowsers() {
+            Intent intent;
+            intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://www.facebook.com"));
+            put("browsers", intent);
+        }
+    };
 
 	public static Intent getIntent(String packageName) {
 		return IntentMap.containsKey(packageName) ? IntentMap.get(packageName) : IntentMap.get("default");

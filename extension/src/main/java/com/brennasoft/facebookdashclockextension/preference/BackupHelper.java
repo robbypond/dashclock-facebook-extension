@@ -9,7 +9,6 @@ public class BackupHelper extends BackupAgentHelper {
 	
 	@Override
 	public void onCreate() {
-		// Compute the default preferences filename.
         String defaultPrefsFilename = getPackageName() + "_preferences";
         addHelper(PREFS_BACKUP_KEY,
                 new SharedPreferencesBackupHelper(this, defaultPrefsFilename));

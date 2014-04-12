@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="pref_key_name" translatable="false">pref_key_name</string>
-    <string name="pref_key_logged_in" translatable="false">pref_key_logged_in</string>
     <string-array name="notification_type_values" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string name="pref_key_notification_types" translatable="false">pref_key_notification_types</string>
     <string name="app_name" translatable="false">DashClock for Facebook</string>
     <string name="app_id" translatable="false">169250303222903</string>
     <string name="app_name_and_version" translatable="false">
@@ -15,31 +12,22 @@
         <b>DashClock for Facebook</b>&nbsp;<font color="#888888">v%1$s</font>
     ]]>
     </string>
-    <string name="pref_key_show_always" translatable="false">pref_key_show_always</string>
-    <string name="pref_key_app" translatable="false">pref_key_app</string>
     <string name="facebook_component_name" translatable="false">com.facebook.katana/com.facebook.katana.IntentUriHandler</string>
-    <string name="pref_key_mobile_site" translatable="false">pref_key_mobile_site</string>
-    <string name="pref_key_display_style" translatable="false">pref_key_display_style</string>
     <string-array name="display_style_values" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>
-    <string name="pref_key_include_preview" translatable="false">pref_key_include_preview</string>
     <string name="pref_key_clear_notifications" translatable="false">pref_key_clear_notifications</string>
     <string name="pref_key_launch_messenger_on_message" translatable="false">pref_key_launch_messenger_on_message</string>
-    <string name="pref_key_update_on_screen_on" translatable="false">pref_key_update_on_screen_on</string>
-    <string name="pref_key_notification_applications" translatable="false">pref_key_notification_applications</string>
-    <string name="pref_key_filter_notifications" translatable="false">pref_key_filter_notifications</string>
-    <string name="pref_key_website_notifications" translatable="false">pref_key_website_notificatons</string><string-array name="application_ids" translatable="false">
-    <item>141157392619610</item>
-    <item>2409997254</item>
-    <item>19675640871</item>
-    <item>302324425790</item>
-    <item>2309869772</item>
-    <item>2305272732</item>
-    <item>2392950137</item>
-    <item>2530096808</item>
-    <item>2719290516</item>
-</string-array>
-    <string name="pref_key_app_component_name" translatable="false">pref_key_app_component_name</string>
+    <string-array name="application_ids" translatable="false">
+        <item>141157392619610</item>
+        <item>2409997254</item>
+        <item>19675640871</item>
+        <item>302324425790</item>
+        <item>2309869772</item>
+        <item>2305272732</item>
+        <item>2392950137</item>
+        <item>2530096808</item>
+        <item>2719290516</item>
+    </string-array>
 </resources>

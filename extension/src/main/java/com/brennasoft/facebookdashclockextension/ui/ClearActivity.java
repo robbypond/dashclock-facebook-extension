@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.brennasoft.facebookdashclockextension.FacebookDashService;
 import com.facebook.HttpMethod;
@@ -26,9 +27,13 @@ public class ClearActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		new ClearAsyncTask().execute();
-		
+
+        String uri = getIntent().getStringExtra(FacebookDashService.LAUNCH_INTENT);
+        if(TextUtils.isEmpty(uri)) {
+            finish();
+        }
 		try {
-			Intent intent = Intent.parseUri(getIntent().getStringExtra(FacebookDashService.LAUNCH_INTENT), Intent.URI_INTENT_SCHEME);
+			Intent intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
 			startActivity(intent);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -37,12 +42,6 @@ public class ClearActivity extends Activity {
 	}
 
 	private class ClearAsyncTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected void onPostExecute(Void result) {
-			finish();
-			super.onPostExecute(result);
-		}
 
 		@Override
 		protected Void doInBackground(Void... arg0) {

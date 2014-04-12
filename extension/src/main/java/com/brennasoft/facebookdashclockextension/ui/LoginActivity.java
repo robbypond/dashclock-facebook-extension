@@ -52,8 +52,8 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
 	@Override
 	public void call(Session session, SessionState state, Exception exception) {
 		final Editor e = mPreferences.edit();
-		final String nameKey = getString(R.string.pref_key_name);
-		final String loggedInKey = getString(R.string.pref_key_logged_in);
+		final String nameKey = "pref_key_name";
+		final String loggedInKey = "pref_key_logged_in";
 		if(state.isOpened()) {
 			// make request to the /me API
             Request.newMeRequest(session, new Request.GraphUserCallback() {

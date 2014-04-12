@@ -22,11 +22,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.brennasoft.facebookdashclockextension.ui.BindableAdapter;
-import com.brennasoft.facebookdashclockextension.BuildConfig;
 import com.brennasoft.facebookdashclockextension.R;
+import com.brennasoft.facebookdashclockextension.ui.BindableAdapter;
 import com.brennasoft.facebookdashclockextension.util.AppUtils;
-import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,8 +74,8 @@ class AppPreference extends DialogPreference implements OnItemClickListener {
         ImageView imageView = (ImageView) view.findViewById(R.id.icon);
         SharedPreferences prefs = getSharedPreferences();
         final Context context = getContext();
-        String componentName = prefs.getString(context.getString(R.string.pref_key_app_component_name), "");
-        String appName = prefs.getString(getContext().getString(R.string.pref_key_app), "");
+        String componentName = prefs.getString("pref_key_app_component_name", "");
+        String appName = prefs.getString("pref_key_app", "");
         PackageManager pm = context.getPackageManager();
         if (imageView != null && !TextUtils.isEmpty(componentName)) {
         	Drawable icon;
@@ -86,13 +84,10 @@ class AppPreference extends DialogPreference implements OnItemClickListener {
 	            imageView.setImageDrawable(icon);
 	            imageView.setVisibility(View.VISIBLE);
 			} catch (NameNotFoundException exc) {
-                if(!BuildConfig.DEBUG) {
-                    Crashlytics.logException(exc);
-                }
 				appName = "";
 				Editor e = prefs.edit();
-				e.putString(getContext().getString(R.string.pref_key_app), "");
-				e.putString(getContext().getString(R.string.pref_key_app_component_name), "");
+				e.putString("pref_key_app", "");
+				e.putString("pref_key_app_component_name", "");
 				mSharedPreferenceSaver.savePreferences(e, true);
 			}       
         }
@@ -159,8 +154,8 @@ class AppPreference extends DialogPreference implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
 		ActivityInfo ai = mAdapter.getItem(index).activityInfo;
 		Editor e = getSharedPreferences().edit();
-		e.putString(getContext().getString(R.string.pref_key_app), ai.applicationInfo.loadLabel(getContext().getPackageManager()).toString());
-		e.putString(getContext().getString(R.string.pref_key_app_component_name), new ComponentName(ai.packageName, ai.name).flattenToString());
+		e.putString("pref_key_app", ai.applicationInfo.loadLabel(getContext().getPackageManager()).toString());
+		e.putString("pref_key_app_component_name", new ComponentName(ai.packageName, ai.name).flattenToString());
 		mSharedPreferenceSaver.savePreferences(e, true);
 		getDialog().dismiss();
 		notifyChanged();

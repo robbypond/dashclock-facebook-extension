@@ -86,28 +86,27 @@ public class SettingsActivity extends Activity {
             super.onViewCreated(view, savedInstanceState);
 
             ((PreferenceCategory) getPreferenceScreen().findPreference(
-                    getString(R.string.pref_category_app))).removePreference(findPreference(
-                    getString(R.string.pref_key_app_component_name)));
+                    getString(R.string.pref_category_app))).removePreference(findPreference("pref_key_app_component_name"));
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
             // their values. When their values change, their summaries are updated
             // to reflect the new value, per the Android Design guidelines.
             Resources res = getResources();
 
-            mNamePreference = findPreference(res.getString(R.string.pref_key_name));
+            mNamePreference = findPreference("pref_key_name");
             mNamePreference.setOnPreferenceClickListener(this);
 
             findPreference(res.getString(R.string.pref_key_launch_messenger_on_message)).setEnabled(AppUtils.hasMessenger(getActivity()));
 
-            CheckBoxPreference filterNotifications = (CheckBoxPreference) findPreference(res.getString(R.string.pref_key_filter_notifications));
+            CheckBoxPreference filterNotifications = (CheckBoxPreference) findPreference("pref_key_filter_notifications");
 
-            final Preference notificationApplications = findPreference(res.getString(R.string.pref_key_notification_applications));
+            final Preference notificationApplications = findPreference("pref_key_notification_applications");
 
             notificationApplications.setEnabled(filterNotifications.isChecked());
 
             bindPreferenceSummaryToValue(mNamePreference);
-            bindPreferenceSummaryToValue(findPreference(res.getString(R.string.pref_key_notification_types)));
-            bindPreferenceSummaryToValue(findPreference(res.getString(R.string.pref_key_display_style)));
+            bindPreferenceSummaryToValue(findPreference("pref_key_notification_types"));
+            bindPreferenceSummaryToValue(findPreference("pref_key_display_style"));
             bindPreferenceSummaryToValue(notificationApplications);
 
             filterNotifications.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -144,7 +143,7 @@ public class SettingsActivity extends Activity {
         }
 
         public void updateName(String name) {
-            findPreference(getString(R.string.pref_key_name)).setSummary(name);
+            findPreference("pref_key_name").setSummary(name);
         }
 
         @Override
@@ -164,7 +163,7 @@ public class SettingsActivity extends Activity {
             } else if(resultCode == FACEBOOK_LOGIN_FAILED) {
                 Toast.makeText(getActivity(), R.string.login_failure, Toast.LENGTH_LONG).show();
             }
-            String name = getPreferenceManager().getSharedPreferences().getString(getString(R.string.pref_key_name), getString(R.string.not_logged_in));
+            String name = getPreferenceManager().getSharedPreferences().getString("pref_key_name", getString(R.string.not_logged_in));
             updateName(name);
         }
     }
@@ -192,7 +191,7 @@ public class SettingsActivity extends Activity {
                 MultiSelectListPreference listPreference = (MultiSelectListPreference) preference;
                 Iterator<String> it = ((HashSet<String>) value).iterator();
                 StringBuilder summary = new StringBuilder();
-                boolean notificationTypes = preference.getKey().equalsIgnoreCase(resources.getString(R.string.pref_key_notification_types));
+                boolean notificationTypes = preference.getKey().equalsIgnoreCase("pref_key_notification_types");
                 String[] types = resources.getStringArray(notificationTypes ? R.array.notification_types : R.array.application_names);
                 String[] values = resources.getStringArray(notificationTypes ? R.array.notification_type_values : R.array.application_ids);
                 while(it.hasNext()) {
@@ -207,7 +206,7 @@ public class SettingsActivity extends Activity {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
-                if(preference.getKey().equals(preference.getContext().getString(R.string.pref_key_name)) && TextUtils.isEmpty(stringValue)) {
+                if(preference.getKey().equals("pref_key_name") && TextUtils.isEmpty(stringValue)) {
                     preference.setSummary(preference.getContext().getString(R.string.not_logged_in));
                 }
             }

@@ -16,6 +16,7 @@
 
 package com.facebook.widget;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -25,7 +26,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.facebook.*;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionDefaultAudience;
+import com.facebook.SessionLoginBehavior;
+import com.facebook.SessionState;
 import com.facebook.android.R;
 import com.facebook.internal.AnalyticsEvents;
 import com.facebook.internal.ImageDownloader;
@@ -435,7 +442,8 @@ public class UserSettingsFragment extends FacebookFragment {
     }
 
     private void processImageResponse(String id, ImageResponse response) {
-        if (response != null) {
+        Activity activity = getActivity();
+        if (response != null && !isDetached() && activity != null && !activity.isFinishing() && !activity.isDestroyed()) {
             Bitmap bitmap = response.getBitmap();
             if (bitmap != null) {
                 BitmapDrawable drawable = new BitmapDrawable(UserSettingsFragment.this.getResources(), bitmap);
