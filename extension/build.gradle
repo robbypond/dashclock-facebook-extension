@@ -31,10 +31,13 @@ android {
     }
     buildTypes {
         release {
-            runProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
