@@ -6,7 +6,7 @@ DashClock Facebook Extension is an extension for DashClock that allows you to qu
 When you login, first I request the read_mailbox permission to get your inbox unread count, and then I request the manage_notifications permission, these permissions must be requested separate because one is read and the other is publish. My app only reads messages/notifications. I do not use these permissions to publish anything to your facebook feed.
 
 Translations:
-Please help translate: http://crowdin.net/project/dashclockfacebookextension/invite
+Please help translate: https://github.com/robbypond/DashclockFacebookExtension-Localization
 
 Thanks!
 
