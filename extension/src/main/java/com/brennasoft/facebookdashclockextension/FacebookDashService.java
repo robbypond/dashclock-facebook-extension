@@ -262,9 +262,7 @@ public class FacebookDashService extends DashClockExtension {
     MessageInfo getMessageInfo(Session session) {
         Request request = new Request(session, "me/inbox");
         Bundle parameters = new Bundle();
-        if(mAppSettings.getShowPreview()) {
-            parameters.putString("fields", messageFields + ",comments");
-        }
+        parameters.putString("fields", messageFields + (mAppSettings.getShowPreview() ? ",comments" : ""));
         request.setParameters(parameters);
         parameters.putInt("limit", 1);
         Response resp = request.executeAndWait();
@@ -306,7 +304,7 @@ public class FacebookDashService extends DashClockExtension {
 	    ConnectivityManager cm =
 	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+        return netInfo != null && netInfo.isConnected();
     }
 
     class NotificationInfo {
