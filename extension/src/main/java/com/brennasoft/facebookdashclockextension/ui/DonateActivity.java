@@ -116,7 +116,7 @@ public class DonateActivity extends ListActivity {
          * want to make it easy for an attacker to replace the public key with one
          * of their own and then fake messages from the server.
          */
-        String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8DOFeX1RKY5kI9B5UbamE4DVpLwqyfSTLMK/q9C9lGD8dzYYsDoLz1XdwpRdMSm9e6EnEvqPCwXwVH+zP5id7hBG+bA//TShy3D/WH/LekhHqxwT50TAVUKzn7yzVPPSEEXEV7LleYgwyx3A8S14WoKdIK0y902rtDcU6bekAVBXLEevJhWfgricNgLyf81o6cfW0e/Qo0+MIx6MDiGo9MNa+V2d8RwzbhyoRSGH1vBQTWlpiv2HlGUFsRg28ljH+cSMVl2Jqbm9acy3A7UveVDqVySBgEFqIn6EIk9thM7VYI7GGc9tEDcuE/DI2KY5C/2m63us6JqHMOySMTbxmwIDAQAB";
+        String base64EncodedPublicKey = getString(R.string.public_key);
         
         // Some sanity checks to see if the developer (that's you!) really followed the
         // instructions to run this sample (don't put these checks on your app!)

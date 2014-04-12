@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAInnfNdd52XJlZX5wk4VwUGmJ-2yFjFtb9EXemnw" />
+            android:value="@string/backup_key" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -56,7 +56,7 @@
 
         <meta-data
             android:name="com.crashlytics.ApiKey"
-            android:value="567e965ff867629d54c55d1cdba09bc5adeb7250" />
+            android:value="@string/crashlytics_api_key" />
 
         <activity
             android:exported="true"
