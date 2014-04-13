@@ -21,9 +21,9 @@ import android.content.SharedPreferences;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AppSettings {
+public final class AppSettings {
 
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
 
     public AppSettings(SharedPreferences prefs) {
         this.prefs = prefs;

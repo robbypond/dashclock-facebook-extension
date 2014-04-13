@@ -37,6 +37,9 @@ import java.security.spec.X509EncodedKeySpec;
  * purchases as verified.
  */
 public class Security {
+
+    private Security() {}
+
     private static final String TAG = "IABUtil/Security";
 
     private static final String KEY_FACTORY_ALGORITHM = "RSA";

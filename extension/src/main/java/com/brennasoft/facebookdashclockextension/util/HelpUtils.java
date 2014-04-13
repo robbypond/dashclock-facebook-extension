@@ -44,6 +44,8 @@ import com.inscription.ChangeLogDialog;
  */
 public class HelpUtils {
 
+    private HelpUtils() {}
+
     public static void showAboutDialog(Activity activity) {
         FragmentManager fm = activity.getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

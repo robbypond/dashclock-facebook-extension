@@ -24,10 +24,13 @@ import android.net.Uri;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AppUtils {
 
-	public static final HashMap<String, Intent> IntentMap = new HashMap<String, Intent>() {{
+    private AppUtils() {}
+
+	public static final Map<String, Intent> IntentMap = new HashMap<String, Intent>() {{
         addFriendCaster();
         addSeesmic();
         addFacebook();

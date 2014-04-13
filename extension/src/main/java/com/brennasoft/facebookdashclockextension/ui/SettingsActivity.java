@@ -151,7 +151,7 @@ public class SettingsActivity extends Activity {
 
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            if(preference == mNamePreference) {
+            if(preference.equals(mNamePreference)) {
                 this.startActivityForResult(new Intent(getActivity(), LoginActivity.class), FACEBOOK_LOGIN);
                 return true;
             }
