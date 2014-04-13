@@ -28,10 +28,10 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.vending.billing.util.IabHelper;
+import com.android.vending.billing.util.IabResult;
+import com.android.vending.billing.util.Purchase;
 import com.brennasoft.facebookdashclockextension.R;
-import com.brennasoft.facebookdashclockextension.billing.IabHelper;
-import com.brennasoft.facebookdashclockextension.billing.IabResult;
-import com.brennasoft.facebookdashclockextension.billing.Purchase;
 import com.brennasoft.facebookdashclockextension.util.HelpUtils;
 
 public class DonateActivity extends ListActivity {

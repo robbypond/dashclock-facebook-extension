@@ -1,1 +1,1 @@
-include ':extension', ':facebook-android-sdk'
+include ':extension', ':facebook-android-sdk', ':billing'

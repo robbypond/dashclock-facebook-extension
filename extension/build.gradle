@@ -48,4 +48,5 @@ dependencies {
     compile 'com.github.gabrielemariotti.changeloglib:library:1.4.0'
     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
     compile project(':facebook-android-sdk')
+    compile project(':billing')
 }
