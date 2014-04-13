@@ -36,6 +36,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.brennasoft.facebookdashclockextension.R;
+import com.brennasoft.facebookdashclockextension.preference.AppSettings;
 import com.brennasoft.facebookdashclockextension.util.AppUtils;
 import com.brennasoft.facebookdashclockextension.util.HelpUtils;
 import com.facebook.Session;
@@ -87,6 +88,89 @@ public class SettingsActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    private static String getListPreferenceNameForType(String[] types, String[] values, Long value) {
+        int index = 0;
+        for(String valueString : values) {
+            Long testValue = Long.valueOf(valueString);
+            if(testValue.longValue() == value.longValue()) {
+                break;
+            }
+            index++;
+        }
+        return types[index];
+    }
+
+    /**
+     * Binds a preference's summary to its value. More specifically, when the
+     * preference's value is changed, its summary (line of text below the
+     * preference title) is updated to reflect the value. The summary is also
+     * immediately updated upon calling this method. The exact display format is
+     * dependent on the type of preference.
+     *
+     * @see #sBindPreferenceSummaryToValueListener
+     */
+    private static void bindPreferenceSummaryToValue(Preference preference) {
+        // Set the listener to watch for value changes.
+        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+        Object value;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
+        if(preference instanceof MultiSelectListPreference) {
+            value = prefs.getStringSet(preference.getKey(), new HashSet<String>());
+        } else {
+            value = prefs.getString(preference.getKey(), "");
+        }
+        // Trigger the listener immediately with the preference's
+        // current value.
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, value);
+    }
+
+    /**
+     * A preference value change listener that updates the preference's summary
+     * to reflect its new value.
+     */
+    private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object value) {
+            String stringValue = value.toString();
+            Resources resources = preference.getContext().getResources();
+            if (preference instanceof ListPreference) {
+                // For list preferences, look up the correct display value in
+                // the preference's 'entries' list.
+                ListPreference listPreference = (ListPreference) preference;
+                int index = listPreference.findIndexOfValue(stringValue);
+
+                // Set the summary to reflect the new value.
+                preference.setSummary(index >= 0 ? listPreference.getEntries()[index]
+                        : null);
+
+            } else if(preference instanceof MultiSelectListPreference) {
+                MultiSelectListPreference listPreference = (MultiSelectListPreference) preference;
+                Iterator<String> it = ((HashSet<String>) value).iterator();
+                StringBuilder summary = new StringBuilder();
+                boolean notificationTypes = preference.getKey().equalsIgnoreCase("pref_key_notification_types");
+                String[] types = resources.getStringArray(notificationTypes ? R.array.notification_types : R.array.application_names);
+                String[] values = resources.getStringArray(notificationTypes ? R.array.notification_type_values : R.array.application_ids);
+                while(it.hasNext()) {
+                    summary.append(getListPreferenceNameForType(types, values, Long.valueOf(it.next())));
+                    if(it.hasNext()) {
+                        summary.append(", ");
+                    }
+                }
+                listPreference.setSummary(summary);
+
+            } else {
+                // For all other preferences, set the summary to the value's
+                // simple string representation.
+                preference.setSummary(stringValue);
+                if(preference.getKey().equals(AppSettings.PREF_KEY_NAME) && TextUtils.isEmpty(stringValue)) {
+                    preference.setSummary(preference.getContext().getString(R.string.not_logged_in));
+                }
+            }
+            return true;
+        }
+    };
+
     public static class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
         Preference mNamePreference;
@@ -109,7 +193,7 @@ public class SettingsActivity extends Activity {
             // to reflect the new value, per the Android Design guidelines.
             Resources res = getResources();
 
-            mNamePreference = findPreference("pref_key_name");
+            mNamePreference = findPreference(AppSettings.PREF_KEY_NAME);
             mNamePreference.setOnPreferenceClickListener(this);
 
             findPreference(res.getString(R.string.pref_key_launch_messenger_on_message)).setEnabled(AppUtils.hasMessenger(getActivity()));
@@ -179,91 +263,8 @@ public class SettingsActivity extends Activity {
             } else if(resultCode == FACEBOOK_LOGIN_FAILED) {
                 Toast.makeText(getActivity(), R.string.login_failure, Toast.LENGTH_LONG).show();
             }
-            String name = getPreferenceManager().getSharedPreferences().getString("pref_key_name", getString(R.string.not_logged_in));
+            String name = getPreferenceManager().getSharedPreferences().getString(AppSettings.PREF_KEY_NAME, getString(R.string.not_logged_in));
             updateName(name);
         }
-    }
-
-    /**
-     * A preference value change listener that updates the preference's summary
-     * to reflect its new value.
-     */
-    private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
-            Resources resources = preference.getContext().getResources();
-            if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
-
-                // Set the summary to reflect the new value.
-                preference.setSummary(index >= 0 ? listPreference.getEntries()[index]
-                        : null);
-
-            } else if(preference instanceof MultiSelectListPreference) {
-                MultiSelectListPreference listPreference = (MultiSelectListPreference) preference;
-                Iterator<String> it = ((HashSet<String>) value).iterator();
-                StringBuilder summary = new StringBuilder();
-                boolean notificationTypes = preference.getKey().equalsIgnoreCase("pref_key_notification_types");
-                String[] types = resources.getStringArray(notificationTypes ? R.array.notification_types : R.array.application_names);
-                String[] values = resources.getStringArray(notificationTypes ? R.array.notification_type_values : R.array.application_ids);
-                while(it.hasNext()) {
-                    summary.append(getListPreferenceNameForType(types, values, Long.valueOf(it.next())));
-                    if(it.hasNext()) {
-                        summary.append(", ");
-                    }
-                }
-                listPreference.setSummary(summary);
-
-            } else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
-                preference.setSummary(stringValue);
-                if(preference.getKey().equals("pref_key_name") && TextUtils.isEmpty(stringValue)) {
-                    preference.setSummary(preference.getContext().getString(R.string.not_logged_in));
-                }
-            }
-            return true;
-        }
-    };
-
-    private static String getListPreferenceNameForType(String[] types, String[] values, Long value) {
-        int index = 0;
-        for(String valueString : values) {
-            Long testValue = Long.valueOf(valueString);
-            if(testValue.longValue() == value.longValue()) {
-                break;
-            }
-            index++;
-        }
-        return types[index];
-    }
-
-    /**
-     * Binds a preference's summary to its value. More specifically, when the
-     * preference's value is changed, its summary (line of text below the
-     * preference title) is updated to reflect the value. The summary is also
-     * immediately updated upon calling this method. The exact display format is
-     * dependent on the type of preference.
-     *
-     * @see #sBindPreferenceSummaryToValueListener
-     */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
-        Object value;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
-        if(preference instanceof MultiSelectListPreference) {
-            value = prefs.getStringSet(preference.getKey(), new HashSet<String>());
-        } else {
-            value = prefs.getString(preference.getKey(), "");
-        }
-        // Trigger the listener immediately with the preference's
-        // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, value);
     }
 }

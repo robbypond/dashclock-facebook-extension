@@ -42,7 +42,7 @@ import com.inscription.ChangeLogDialog;
 /**
  * Helper class for showing about dialogs and what not.
  */
-public class HelpUtils {
+public final class HelpUtils {
 
     private HelpUtils() {}
 
@@ -56,6 +56,16 @@ public class HelpUtils {
         ft.addToBackStack(null);
 
         new AboutDialog().show(ft, "dialog_about");
+    }
+
+    public static void showChangelog(Context context) {
+        ChangeLogDialog dlg = new ChangeLogDialog(context);
+        dlg.show();
+    }
+
+    public static void showDonateActivity(Context context) {
+        Intent intent = new Intent(context, DonateActivity.class);
+        context.startActivity(intent);
     }
 
     public static class AboutDialog extends DialogFragment {
@@ -102,14 +112,4 @@ public class HelpUtils {
                     .create();
         }
     }
-    
-    public static void showChangelog(Context context) {
-		ChangeLogDialog dlg = new ChangeLogDialog(context);
-		dlg.show();
-	}
-
-	public static void showDonateActivity(Context context) {
-		Intent intent = new Intent(context, DonateActivity.class);
-		context.startActivity(intent);
-	}
 }

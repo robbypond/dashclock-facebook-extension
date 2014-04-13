@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 
 import com.brennasoft.facebookdashclockextension.R;
+import com.brennasoft.facebookdashclockextension.preference.AppSettings;
 import com.brennasoft.facebookdashclockextension.preference.SharedPreferenceSaver;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -37,7 +38,7 @@ import java.util.Arrays;
 
 public class LoginActivity extends FragmentActivity implements StatusCallback {
 
-	private SharedPreferences mPreferences;
+    private SharedPreferences mPreferences;
 	private SharedPreferenceSaver mSharedPreferenceSaver;
 
     @Override
@@ -68,7 +69,7 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
 	@Override
 	public void call(final Session session, SessionState state, Exception exception) {
 		final Editor e = mPreferences.edit();
-		final String nameKey = "pref_key_name";
+		final String nameKey = AppSettings.PREF_KEY_NAME;
 		final String loggedInKey = "pref_key_logged_in";
 		if(state.isOpened()) {
 			// make request to the /me API

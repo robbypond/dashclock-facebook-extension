@@ -50,17 +50,18 @@ import java.util.Set;
 
 class AppPreference extends DialogPreference implements OnItemClickListener {
 
-	private AppAdapter mAdapter;
-	private final SharedPreferenceSaver mSharedPreferenceSaver;
+    private AppAdapter mAdapter;
+    private final SharedPreferenceSaver mSharedPreferenceSaver;
 
     public AppPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);setLayoutResource(R.layout.preference);
+        super(context, attrs);
+        setLayoutResource(R.layout.preference);
         mSharedPreferenceSaver = new SharedPreferenceSaver(context);
     }
 
     @Override
     protected View onCreateDialogView() {
-		ListView view = new ListView(getContext());
+        ListView view = new ListView(getContext());
         view.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
         view.setFastScrollEnabled(true);
         view.setAdapter(adapter());
@@ -77,7 +78,7 @@ class AppPreference extends DialogPreference implements OnItemClickListener {
     private void loadApps() {
         PackageManager packageManager = getContext().getPackageManager();
         Set<ResolveInfo> apps = new HashSet<>();
-        for(String key : AppUtils.IntentMap.keySet()) {
+        for (String key : AppUtils.IntentMap.keySet()) {
             List<ResolveInfo> intentApps = packageManager.queryIntentActivities(AppUtils.IntentMap.get(key), 0);
             apps.addAll(intentApps);
         }
@@ -90,39 +91,50 @@ class AppPreference extends DialogPreference implements OnItemClickListener {
         ImageView imageView = (ImageView) view.findViewById(R.id.icon);
         SharedPreferences prefs = getSharedPreferences();
         final Context context = getContext();
-        String componentName = prefs.getString("pref_key_app_component_name", "");
-        String appName = prefs.getString("pref_key_app", "");
+        String componentName = prefs.getString(AppSettings.PREF_KEY_APP_COMPONENT_NAME, "");
+        String appName = prefs.getString(AppSettings.PREF_KEY_APP, "");
         PackageManager pm = context.getPackageManager();
         if (imageView != null && !TextUtils.isEmpty(componentName)) {
-        	Drawable icon;
-			try {
-				icon = pm.getActivityIcon(ComponentName.unflattenFromString(componentName));
-	            imageView.setImageDrawable(icon);
-	            imageView.setVisibility(View.VISIBLE);
-			} catch (NameNotFoundException exc) {
-				appName = "";
-				Editor e = prefs.edit();
-				e.putString("pref_key_app", "");
-				e.putString("pref_key_app_component_name", "");
-				mSharedPreferenceSaver.savePreferences(e, true);
-			}       
+            Drawable icon;
+            try {
+                icon = pm.getActivityIcon(ComponentName.unflattenFromString(componentName));
+                imageView.setImageDrawable(icon);
+                imageView.setVisibility(View.VISIBLE);
+            } catch (NameNotFoundException exc) {
+                appName = "";
+                Editor e = prefs.edit();
+                e.putString(AppSettings.PREF_KEY_APP, "");
+                e.putString(AppSettings.PREF_KEY_APP_COMPONENT_NAME, "");
+                mSharedPreferenceSaver.savePreferences(e, true);
+            }
         }
         TextView textView = (TextView) view.findViewById(R.id.title);
         textView.setText(getContext().getString(R.string.title_app));
-        if(!TextUtils.isEmpty(appName)) {
-        	textView = (TextView) view.findViewById(R.id.summary);
-        	textView.setText(appName);
-        	textView.setVisibility(View.VISIBLE);
+        if (!TextUtils.isEmpty(appName)) {
+            textView = (TextView) view.findViewById(R.id.summary);
+            textView.setText(appName);
+            textView.setVisibility(View.VISIBLE);
         }
         notifyChanged();
     }
-	
-	private ListAdapter adapter() {
+
+    private ListAdapter adapter() {
         mAdapter = new AppAdapter(getContext());
         return mAdapter;
-	}
+    }
 
-    private class AppAdapter extends BindableAdapter<ResolveInfo> {
+    @Override
+    public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
+        ActivityInfo ai = mAdapter.getItem(index).activityInfo;
+        Editor e = getSharedPreferences().edit();
+        e.putString(AppSettings.PREF_KEY_APP, ai.applicationInfo.loadLabel(getContext().getPackageManager()).toString());
+        e.putString(AppSettings.PREF_KEY_APP_COMPONENT_NAME, new ComponentName(ai.packageName, ai.name).flattenToString());
+        mSharedPreferenceSaver.savePreferences(e, true);
+        getDialog().dismiss();
+        notifyChanged();
+    }
+
+    static class AppAdapter extends BindableAdapter<ResolveInfo> {
 
         private List<ResolveInfo> resolveInfos = Collections.EMPTY_LIST;
         private final PackageManager packageManager;
@@ -165,15 +177,4 @@ class AppPreference extends DialogPreference implements OnItemClickListener {
             image.setImageDrawable(item.activityInfo.applicationInfo.loadIcon(packageManager));
         }
     }
-	
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
-		ActivityInfo ai = mAdapter.getItem(index).activityInfo;
-		Editor e = getSharedPreferences().edit();
-		e.putString("pref_key_app", ai.applicationInfo.loadLabel(getContext().getPackageManager()).toString());
-		e.putString("pref_key_app_component_name", new ComponentName(ai.packageName, ai.name).flattenToString());
-		mSharedPreferenceSaver.savePreferences(e, true);
-		getDialog().dismiss();
-		notifyChanged();
-	}
 }

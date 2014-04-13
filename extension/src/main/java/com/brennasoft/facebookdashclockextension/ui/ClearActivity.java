@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.brennasoft.facebookdashclockextension.FacebookDashService;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
@@ -52,8 +53,7 @@ public class ClearActivity extends Activity {
 			Intent intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
 			startActivity(intent);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            Crashlytics.logException(e);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class ClearActivity extends Activity {
 					}
 				}
 			} catch(Exception e) {
-				e.printStackTrace();
+				Crashlytics.logException(e);
 			}
 			if(toClear.size() > 0) {
 				Bundle args = new Bundle();

@@ -162,7 +162,8 @@ public class FacebookDashService extends DashClockExtension {
 	}
 
     private Intent getIntent(int messageCount) {
-        Intent theIntent;Uri siteUri = Uri.parse(mAppSettings.getUseMobileSite() ? "http://m.facebook.com" : "http://www.facebook.com" + (mAppSettings.getGoToNotificationsPage() ? "/notifications" : ""));
+        Intent theIntent;
+        Uri siteUri = Uri.parse(mAppSettings.getUseMobileSite() ? "http://m.facebook.com" : "http://www.facebook.com" + (mAppSettings.getGoToNotificationsPage() ? "/notifications" : ""));
         if(TextUtils.isEmpty(mAppSettings.getComponentName())) { // try facebook default
             if(AppUtils.isIntentAvailable(this, new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications")))) {
                 theIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications"));
@@ -222,9 +223,9 @@ public class FacebookDashService extends DashClockExtension {
                 }
             } catch (JSONException e) {
                 notificationInfo.error = true;
-                e.printStackTrace();
+                Crashlytics.logException(e);
             } catch (ParseException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         }
         return notificationInfo;
@@ -307,14 +308,14 @@ public class FacebookDashService extends DashClockExtension {
         return netInfo != null && netInfo.isConnected();
     }
 
-    class NotificationInfo {
+    private static final class NotificationInfo {
         Date createdTime;
         String body;
         int count;
         boolean error;
     }
 
-    public class MessageInfo {
+    private static final class MessageInfo {
         public Date createdTime;
         public String latestBody;
         public int count;

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AppUtils {
+public final class AppUtils {
 
     private AppUtils() {}
 

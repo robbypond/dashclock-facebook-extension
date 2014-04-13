@@ -23,6 +23,9 @@ import java.util.Set;
 
 public final class AppSettings {
 
+    public static final String PREF_KEY_APP = "pref_key_app";
+    public static final String PREF_KEY_APP_COMPONENT_NAME = "pref_key_app_component_name";
+    public static final String PREF_KEY_NAME = "pref_key_name";
     private final SharedPreferences prefs;
 
     public AppSettings(SharedPreferences prefs) {
