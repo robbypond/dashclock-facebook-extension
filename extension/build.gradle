@@ -43,10 +43,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:19.+'
     compile 'com.crashlytics.android:crashlytics:1.+'
-    compile 'com.jakewharton.timber:timber:2.2.2'
-    compile 'com.github.gabrielemariotti.changeloglib:library:1.4.0'
     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
     compile project(':facebook-android-sdk')
     compile project(':billing')
