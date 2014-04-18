@@ -20,44 +20,36 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.brennasoft.facebookdashclockextension.fbclient.InboxRequest;
+import com.brennasoft.facebookdashclockextension.fbclient.InboxResponse;
+import com.brennasoft.facebookdashclockextension.fbclient.NotificationsRequest;
+import com.brennasoft.facebookdashclockextension.fbclient.NotificationsResponse;
 import com.brennasoft.facebookdashclockextension.preference.AppSettings;
 import com.brennasoft.facebookdashclockextension.ui.ClearActivity;
 import com.brennasoft.facebookdashclockextension.util.AppUtils;
-import com.crashlytics.android.Crashlytics;
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
+import com.brennasoft.facebookdashclockextension.util.BodyBuilder;
+import com.brennasoft.facebookdashclockextension.util.StatusBuilder;
+import com.brennasoft.facebookdashclockextension.util.TitleBuilder;
 import com.facebook.Session;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FacebookDashService extends DashClockExtension {
 
-    private static final String messageFields = "id,unread";
-    private static final SimpleDateFormat facebookDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-    private static final String notificationFql = "select title_text, created_time from notification where recipient_id = me() and is_unread = 1";
-
-	private static final SimpleDateFormat mSdf = new SimpleDateFormat("yyyyMMdd");
-
 	public static final String LAUNCH_INTENT = "LAUNCH_INTENT";
 	
     private AppSettings mAppSettings;
+
+    private static final SimpleDateFormat mSdf = new SimpleDateFormat("yyyyMMdd");
 
     @Override
     protected void onInitialize(boolean isReconnect) {
@@ -88,69 +80,21 @@ public class FacebookDashService extends DashClockExtension {
             data.expandedTitle(getString(R.string.not_logged_in));
             data.visible(true);
         } else if(isOnline()) {
-            NotificationInfo notificationInfo;
-            MessageInfo messageInfo;
-            String body = null;
-            int messageCount = 0, notificationCount = 0;
+            NotificationsResponse notificationsResponse = null;
             if(mAppSettings.getShowNotifications()) {
-                if(mAppSettings.getFilterNotifications() && mAppSettings.getApplicationTypes().size() > 0) {
-                    notificationInfo = getNotificationInfoFiltered(session);
-                } else {
-                    notificationInfo = getNotificationInfo(session);
-                }
-                notificationCount = notificationInfo.count;
-                if(notificationCount > 0) {
-                    body = notificationInfo.body;
-                }
+                notificationsResponse = getNotifications(session);
             }
+            InboxResponse inboxResponse = null;
             if(mAppSettings.getShowMessages()) {
-                messageInfo = getMessageInfo(session);
-                messageCount = messageInfo.count;
-                if(messageCount > 0) {
-                    body = messageInfo.latestBody;
-                }
+                inboxResponse = getInbox(session);
             }
-            Resources res = getResources();
-            if(mAppSettings.getShowAlways() || (messageCount + notificationCount > 0)) {
-                String title = "", status;
-                if(mAppSettings.getShowMessages() && mAppSettings.getShowNotifications()) {
-                    if(!mAppSettings.getShowCondensed()) {
-                        status = messageCount + "/" + notificationCount;
-                        title = res.getQuantityString(R.plurals.message, messageCount, messageCount);
-                        title += " / ";
-                        title += res.getQuantityString(R.plurals.notification, notificationCount, notificationCount);
-                    } else {
-                        status = messageCount + notificationCount + "";
-                        if(messageCount > 0) {
-                            title += res.getString(R.string.message_condensed, messageCount);
-                        }
-                        if(notificationCount > 0) {
-                            title += " " + res.getString(R.string.updates_condensed, notificationCount);
-                        }
-                    }
-                } else if(mAppSettings.getShowMessages()) {
-                    status = messageCount + "";
-                    if(mAppSettings.getShowCondensed() && messageCount > 0) {
-                        title = res.getString(R.string.message_condensed, messageCount);
-                    } else {
-                        title = res.getQuantityString(R.plurals.message, messageCount, messageCount);
-                    }
-                } else {
-                    status = notificationCount + "";
-                    if(mAppSettings.getShowCondensed() && notificationCount > 0) {
-                        title = res.getString(R.string.updates_condensed, notificationCount);
-                    } else {
-                        title = res.getQuantityString(R.plurals.notification, notificationCount, notificationCount);
-                    }
-                }
-                data.status(status).expandedTitle(title.trim());
-                if(mAppSettings.getShowPreview() && !TextUtils.isEmpty(body)) {
-                    data.expandedBody(body);
-                }
-            }
-            Intent theIntent = getIntent(messageCount);
+            data.status(getStatus(notificationsResponse, inboxResponse));
+            data.expandedTitle(getExpandedTitle(notificationsResponse, inboxResponse));
+            data.expandedBody(getExpandedBody(notificationsResponse, inboxResponse));
+            data.contentDescription(data.expandedBody());
+            data.visible(shouldBeVisible(notificationsResponse, inboxResponse));
+            Intent theIntent = getIntent(inboxResponse != null ? inboxResponse.count : 0);
             data.clickIntent(theIntent);
-            data.visible(!TextUtils.isEmpty(data.status()));
             Date sessionExpires = session.getExpirationDate();
             Date now = new Date();
             if(sessionExpires != null && mSdf.format(sessionExpires).equals(mSdf.format(now))) {
@@ -161,144 +105,95 @@ public class FacebookDashService extends DashClockExtension {
         return data;
 	}
 
+    private boolean shouldBeVisible(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
+        return mAppSettings.getShowAlways() || ((notificationsResponse != null && notificationsResponse.count > 0) || (inboxResponse != null && inboxResponse.count > 0));
+    }
+
+    private String getExpandedBody(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
+        String body = "";
+        if(mAppSettings.getShowPreview()) {
+            body = new BodyBuilder(notificationsResponse, inboxResponse).build();
+        }
+        return body;
+    }
+
+    private String getExpandedTitle(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
+        TitleBuilder titleBuilder = new TitleBuilder(notificationsResponse, inboxResponse, getResources());
+        String title = mAppSettings.getShowCondensed() ? titleBuilder.buildCondensed() : titleBuilder.build();
+        return title;
+    }
+
+    private String getStatus(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
+        StatusBuilder statusBuilder = new StatusBuilder(notificationsResponse, inboxResponse);
+        String status = mAppSettings.getShowCondensed() ? statusBuilder.buildCondensed() : statusBuilder.build();
+        return status;
+    }
+
     private Intent getIntent(int messageCount) {
         Intent theIntent;
         Uri siteUri = Uri.parse(mAppSettings.getUseMobileSite() ? "http://m.facebook.com" : "http://www.facebook.com" + (mAppSettings.getGoToNotificationsPage() ? "/notifications" : ""));
         if(TextUtils.isEmpty(mAppSettings.getComponentName())) { // try facebook default
-            if(AppUtils.isIntentAvailable(this, new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications")))) {
-                theIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications"));
-            } else { // no facebook default to browser
-                theIntent = new Intent(Intent.ACTION_VIEW);
-            }
+            theIntent = getDefaultIntent();
         } else { // component is set
-            ComponentName comp = ComponentName.unflattenFromString(mAppSettings.getComponentName());
-            Intent intent = Intent.makeMainActivity(comp);
-            if(AppUtils.isIntentAvailable(this, intent)) { // check if it still exists
-                theIntent = intent;
-            } else {
-                theIntent = new Intent(Intent.ACTION_VIEW, siteUri);
-            }
+            theIntent = getIntentFromComponent(siteUri);
         }
         if(AppUtils.getIntent(theIntent.getPackage()) == null) {
             theIntent.setData(siteUri);
         }
-
         if(messageCount > 0 && mAppSettings.getLaunchMessengerOnMessage() && AppUtils.hasMessenger(this)) {
             theIntent = new Intent();
             theIntent.setComponent(new ComponentName("com.facebook.orca", "com.facebook.orca.auth.StartScreenActivity"));
         }
-
         if(mAppSettings.getClearNotifications()) {
-            String launchUri = theIntent.toUri(Intent.URI_INTENT_SCHEME);
-            theIntent = new Intent(this, ClearActivity.class);
-            theIntent.putExtra(FacebookDashService.LAUNCH_INTENT, launchUri);
+            theIntent = addClearActivityToIntent(theIntent);
         }
         return theIntent;
     }
 
-    private NotificationInfo getNotificationInfo(Session session) {
-        Request request = new Request(session, "me/notifications");
-        Bundle parameters = new Bundle();
-        if(mAppSettings.getShowPreview()) {
-            parameters.putString("fields", "title");
+    private Intent getIntentFromComponent(Uri siteUri) {
+        Intent theIntent;ComponentName comp = ComponentName.unflattenFromString(mAppSettings.getComponentName());
+        Intent intent = Intent.makeMainActivity(comp);
+        if(AppUtils.isIntentAvailable(this, intent)) { // check if it still exists
+            theIntent = intent;
+        } else {
+            theIntent = new Intent(Intent.ACTION_VIEW, siteUri);
         }
-        request.setParameters(parameters);
-        parameters.putInt("limit", 1);
-        Response resp = request.executeAndWait();
-        NotificationInfo notificationInfo = new NotificationInfo();
-        if(resp.getError() == null) {
-            JSONObject root = resp.getGraphObject().getInnerJSONObject();
-            try {
-                if(root.has("summary") && root.get("summary") instanceof JSONObject) {
-                    JSONObject summary = root.getJSONObject("summary");
-                    notificationInfo.count = summary.getInt("unseen_count");
-                    if(notificationInfo.count  > 0) {
-                        JSONArray jsonArray = root.getJSONArray("data");
-                        if(jsonArray.length() > 0) {
-                            JSONObject note = jsonArray.getJSONObject(0);
-                            notificationInfo.body = note.getString("title");
-                            notificationInfo.createdTime = facebookDateFormat.parse(note.getString("created_time"));
-                        }
-                    }
-                }
-            } catch (JSONException e) {
-                notificationInfo.error = true;
-                Crashlytics.logException(e);
-            } catch (ParseException e) {
-                Crashlytics.logException(e);
-            }
-        }
-        return notificationInfo;
+        return theIntent;
     }
 
-    NotificationInfo getNotificationInfoFiltered(Session session) {
-        Bundle params = new Bundle();
-        params.putString("q", notificationFql + " and app_id in " + mAppSettings.getApplicationTypes().toString().replace('[', '(').replace(']', ')'));
-        Request request = new Request(session,  "/fql",
-                params,
-                HttpMethod.GET);
-        Response response = request.executeAndWait();
-        NotificationInfo notificationInfo = new NotificationInfo();
-        if(response.getError() == null) {
-            try {
-                JSONArray data = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
-                if(data.length() > 0) {
-                    JSONObject note = data.getJSONObject(0);
-                    notificationInfo.body = note.getString("title_text");
-                    notificationInfo.createdTime = new Date(Long.parseLong(note.getString("created_time")));
-                }
-                notificationInfo.count = data.length();
-            } catch (JSONException e) {
-                notificationInfo.error = true;
-                Crashlytics.logException(e);
-            }
-        } else {
-            notificationInfo.error = true;
-            Crashlytics.log("Error getting messages: " + response.getError().getErrorMessage());
-            Crashlytics.logException(response.getError().getException());
+    private Intent getDefaultIntent() {
+        Intent theIntent;
+        if(AppUtils.isIntentAvailable(this, new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications")))) {
+            theIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications"));
+        } else { // no facebook default to browser
+            theIntent = new Intent(Intent.ACTION_VIEW);
         }
-        return notificationInfo;
+        return theIntent;
     }
 
-    MessageInfo getMessageInfo(Session session) {
-        Request request = new Request(session, "me/inbox");
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", messageFields + (mAppSettings.getShowPreview() ? ",comments" : ""));
-        request.setParameters(parameters);
-        parameters.putInt("limit", 1);
-        Response resp = request.executeAndWait();
-        MessageInfo msgInfo = new MessageInfo();
-        if(resp.getError() == null) {
-            JSONObject root = resp.getGraphObject().getInnerJSONObject();
-            try {
-                JSONObject summary = root.getJSONObject("summary");
-                msgInfo.count = summary.getInt("unread_count");
-                if(msgInfo.count > 0 && mAppSettings.getShowPreview()) {
-                    JSONArray messages = root.getJSONArray("data");
-                    for(int i=0; i<messages.length(); i++) {
-                        JSONObject message = messages.getJSONObject(i);
-                        boolean unread = (message.getInt("unread") == 1);
-                        if(unread) {
-                            JSONArray comments = message.getJSONObject("comments").getJSONArray("data");
-                            JSONObject latest = comments.getJSONObject(comments.length() - 1);
-                            msgInfo.latestBody = latest.getJSONObject("from").getString("name") + ": " + latest.getString("message");
-                            msgInfo.createdTime = facebookDateFormat.parse(latest.getString("created_time"));
-                            break;
-                        }
-                    }
-                }
-            } catch (JSONException e) {
-                msgInfo.error = true;
-                Crashlytics.logException(e);
-            } catch (ParseException e) {
-                Crashlytics.logException(e);
-            }
+    private Intent addClearActivityToIntent(Intent theIntent) {
+        String launchUri = theIntent.toUri(Intent.URI_INTENT_SCHEME);
+        theIntent = new Intent(this, ClearActivity.class);
+        theIntent.putExtra(FacebookDashService.LAUNCH_INTENT, launchUri);
+        return theIntent;
+    }
+
+    private NotificationsResponse getNotifications(Session session) {
+        NotificationsRequest request = new NotificationsRequest();
+        NotificationsResponse response;
+        if(mAppSettings.getFilterNotifications() && mAppSettings.getApplicationTypes().size() > 0) {
+            response = request.executeWithApplicationFilter(session, mAppSettings.getApplicationTypes());
         } else {
-            Crashlytics.log("Error getting messages: " + resp.getError().getErrorMessage());
-            Crashlytics.logException(resp.getError().getException());
-            msgInfo.error = true;
+            response = request.execute(session);
         }
-        return msgInfo;
+        return response;
+    }
+
+
+    private InboxResponse getInbox(Session session) {
+        InboxRequest request = new InboxRequest();
+        InboxResponse response = request.execute(session);
+        return response;
     }
 
     boolean isOnline() {
@@ -306,19 +201,5 @@ public class FacebookDashService extends DashClockExtension {
 	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnected();
-    }
-
-    private static final class NotificationInfo {
-        Date createdTime;
-        String body;
-        int count;
-        boolean error;
-    }
-
-    private static final class MessageInfo {
-        public Date createdTime;
-        public String latestBody;
-        public int count;
-        public boolean error;
     }
 }

@@ -69,16 +69,13 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
 	@Override
 	public void call(final Session session, SessionState state, Exception exception) {
 		final Editor e = mPreferences.edit();
-		final String nameKey = AppSettings.PREF_KEY_NAME;
-		final String loggedInKey = "pref_key_logged_in";
 		if(state.isOpened()) {
-			// make request to the /me API
             Request.newMeRequest(session, new Request.GraphUserCallback() {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
                     if(user != null) {
-                        e.putString(nameKey, user.getName());
-                        e.putBoolean(loggedInKey, true);
+                        e.putString(AppSettings.PREF_KEY_NAME, user.getName());
+                        e.putBoolean(AppSettings.PREF_KEY_LOGGED_IN, true);
                         mSharedPreferenceSaver.savePreferences(e, true);
                         requestNotificationAccess(session);
                         setResult(SettingsActivity.FACEBOOK_LOGIN_COMPLETE);
@@ -88,15 +85,16 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
                 }
             }).executeAsync();
 		} else if(state.isClosed()) {
-			e.putString(nameKey, getString(R.string.not_logged_in));
-			e.putBoolean(loggedInKey, false);
+			e.putString(AppSettings.PREF_KEY_NAME, getString(R.string.not_logged_in));
+			e.putBoolean(AppSettings.PREF_KEY_LOGGED_IN, false);
 			mSharedPreferenceSaver.savePreferences(e, true);
 			setResult(SettingsActivity.FACEBOOK_LOGIN_FAILED);
 		}
 	}
 
 	void requestNotificationAccess(Session session) {
-		session.requestNewPublishPermissions(
-                new Session.NewPermissionsRequest(this, Arrays.asList("manage_notifications")));
+        Session.NewPermissionsRequest newPermissionsRequest =
+                new Session.NewPermissionsRequest(this, "manage_notifications");
+        session.requestNewPublishPermissions(newPermissionsRequest);
 	}
 }

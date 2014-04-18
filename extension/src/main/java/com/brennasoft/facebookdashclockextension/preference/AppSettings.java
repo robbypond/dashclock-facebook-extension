@@ -26,6 +26,8 @@ public final class AppSettings {
     public static final String PREF_KEY_APP = "pref_key_app";
     public static final String PREF_KEY_APP_COMPONENT_NAME = "pref_key_app_component_name";
     public static final String PREF_KEY_NAME = "pref_key_name";
+    public static final String PREF_KEY_LOGGED_IN = "pref_key_logged_in";
+
     private final SharedPreferences prefs;
 
     public AppSettings(SharedPreferences prefs) {
@@ -37,7 +39,7 @@ public final class AppSettings {
     }
 
     public boolean isLoggedIn() {
-        return prefs.getBoolean("pref_key_logged_in", false);
+        return prefs.getBoolean(PREF_KEY_LOGGED_IN, false);
     }
 
     public boolean getShowNotifications() {
