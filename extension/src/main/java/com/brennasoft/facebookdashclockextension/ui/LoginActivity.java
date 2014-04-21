@@ -93,8 +93,10 @@ public class LoginActivity extends FragmentActivity implements StatusCallback {
 	}
 
 	void requestNotificationAccess(Session session) {
-        Session.NewPermissionsRequest newPermissionsRequest =
-                new Session.NewPermissionsRequest(this, "manage_notifications");
-        session.requestNewPublishPermissions(newPermissionsRequest);
+        if(session.isOpened() && !session.getPermissions().contains("manage_notifications")) {
+            Session.NewPermissionsRequest newPermissionsRequest =
+                    new Session.NewPermissionsRequest(this, "manage_notifications");
+            session.requestNewPublishPermissions(newPermissionsRequest);
+        }
 	}
 }
