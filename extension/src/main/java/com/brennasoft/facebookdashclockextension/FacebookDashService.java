@@ -41,6 +41,7 @@ import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class FacebookDashService extends DashClockExtension {
@@ -93,7 +94,7 @@ public class FacebookDashService extends DashClockExtension {
             data.expandedBody(getExpandedBody(notificationsResponse, inboxResponse));
             data.contentDescription(data.expandedBody());
             data.visible(shouldBeVisible(notificationsResponse, inboxResponse));
-            Intent theIntent = getIntent(inboxResponse != null ? inboxResponse.count : 0);
+            Intent theIntent = getIntent(notificationsResponse, inboxResponse);
             data.clickIntent(theIntent);
             Date sessionExpires = session.getExpirationDate();
             Date now = new Date();
@@ -129,7 +130,8 @@ public class FacebookDashService extends DashClockExtension {
         return status;
     }
 
-    private Intent getIntent(int messageCount) {
+    private Intent getIntent(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
+        int messageCount = inboxResponse != null ? inboxResponse.count : 0;
         Intent theIntent;
         Uri siteUri = Uri.parse(mAppSettings.getUseMobileSite() ? "http://m.facebook.com" : "http://www.facebook.com" + (mAppSettings.getGoToNotificationsPage() ? "/notifications" : ""));
         if(TextUtils.isEmpty(mAppSettings.getComponentName())) { // try facebook default
@@ -146,6 +148,18 @@ public class FacebookDashService extends DashClockExtension {
         }
         if(mAppSettings.getClearNotifications()) {
             theIntent = addClearActivityToIntent(theIntent);
+            theIntent = addNotificationIdsToIntent(notificationsResponse ,theIntent);
+        }
+        return theIntent;
+    }
+
+    private Intent addNotificationIdsToIntent(NotificationsResponse notificationsResponse, Intent theIntent) {
+        if(notificationsResponse != null && notificationsResponse.count > 0) {
+            ArrayList<String> ids = new ArrayList<>();
+            for(int i=0; i<notificationsResponse.count; i++) {
+                ids.add(notificationsResponse.getNotificationId(i));
+            }
+            theIntent.putStringArrayListExtra(ClearActivity.ARG_IDS, ids);
         }
         return theIntent;
     }
@@ -162,10 +176,9 @@ public class FacebookDashService extends DashClockExtension {
     }
 
     private Intent getDefaultIntent() {
-        Intent theIntent;
-        if(AppUtils.isIntentAvailable(this, new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications")))) {
-            theIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications"));
-        } else { // no facebook default to browser
+        Intent theIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications"));
+        theIntent.setPackage("com.facebook.katanas");
+        if(!AppUtils.isIntentAvailable(this, theIntent)) {
             theIntent = new Intent(Intent.ACTION_VIEW);
         }
         return theIntent;
