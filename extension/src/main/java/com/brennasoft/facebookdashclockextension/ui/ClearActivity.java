@@ -37,7 +37,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClearActivity extends Activity {
+public final class ClearActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +46,14 @@ public class ClearActivity extends Activity {
 		new ClearAsyncTask().execute();
 
         String uri = getIntent().getStringExtra(FacebookDashService.LAUNCH_INTENT);
-        if(TextUtils.isEmpty(uri)) {
-            finish();
+        if(!TextUtils.isEmpty(uri)) {
+            try {
+                Intent intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
+                startActivity(intent);
+            } catch (URISyntaxException e) {
+                Crashlytics.logException(e);
+            }
         }
-		try {
-			Intent intent = Intent.parseUri(uri, Intent.URI_INTENT_SCHEME);
-			startActivity(intent);
-		} catch (URISyntaxException e) {
-            Crashlytics.logException(e);
-		}
 	}
 
 	private class ClearAsyncTask extends AsyncTask<Void, Void, Void> {

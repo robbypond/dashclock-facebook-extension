@@ -61,7 +61,6 @@ public class NotificationsRequest {
             for(int i=0; i<data.length(); i++) {
                 JSONObject object = data.getJSONObject(i);
                 notificationsResponse.addNotification(object.getString("notification_id"), object.getLong("updated_time"), object.getString("title_text"));
-//                notificationsResponse.notifications.add(new Notification(object.getString("notification_id"), object.getLong("updated_time"), object.getString("title_text")));
             }
             notificationsResponse.success = true;
         } catch (JSONException e) {
