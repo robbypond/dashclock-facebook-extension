@@ -37,12 +37,16 @@ public class NotificationsResponse {
         return notifications.get(0).text;
     }
 
+    public String getNotificationId(int pos) {
+        return notifications.get(pos).id;
+    }
+
     private class Notification {
         public final String id;
         public final Date time;
         public final String text;
 
-        public Notification(String id, long time, String text) {
+        Notification(String id, long time, String text) {
             this.id = id;
             this.time = new Date(time * 1000);
             this.text = text;

@@ -38,7 +38,7 @@ public class NotificationsRequest {
             "from notification where recipient_id = me() and is_unread = 1 LIMIT 100";
 
     public NotificationsResponse execute(Session session) {
-        NotificationsResponse notificationsResponse = new NotificationsResponse();;
+        NotificationsResponse notificationsResponse = new NotificationsResponse();
         if (session.isOpened()) {
             Bundle parameters = new Bundle();
             parameters.putString("q", q);
@@ -60,7 +60,8 @@ public class NotificationsRequest {
             notificationsResponse.count = data.length();
             for(int i=0; i<data.length(); i++) {
                 JSONObject object = data.getJSONObject(i);
-                notificationsResponse.addNotification(object.getString("notification_id"), object.getLong("updated_time"), object.getString("title_text"));
+                notificationsResponse.addNotification(object.getString("notification_id"),
+                        object.getLong("updated_time"), object.getString("title_text"));
             }
             notificationsResponse.success = true;
         } catch (JSONException e) {
@@ -69,11 +70,13 @@ public class NotificationsRequest {
         return notificationsResponse;
     }
 
-    public NotificationsResponse executeWithApplicationFilter(Session session, Set<String> applicationTypes) {
+    public NotificationsResponse executeWithApplicationFilter(Session session, Set<String>
+            applicationTypes) {
         NotificationsResponse notificationsResponse = null;
         if (session.isOpened()) {
             Bundle parameters = new Bundle();
-            parameters.putString("q", q  + " and app_id in " + applicationTypes.toString().replace('[', '(').replace(']', ')'));
+            parameters.putString("q", q  + " and app_id in " + applicationTypes.toString()
+                    .replace('[', '(').replace(']', ')'));
             Request request = new Request(session, "/fql", parameters, HttpMethod.GET);
             Response response = request.executeAndWait();
             FacebookRequestError error = response.getError();
