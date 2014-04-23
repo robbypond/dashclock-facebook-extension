@@ -18,7 +18,6 @@ package com.brennasoft.facebookdashclockextension.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -26,24 +25,65 @@ import com.brennasoft.facebookdashclockextension.FacebookDashService;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
-import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.model.GraphObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 public final class ClearActivity extends Activity {
-	
-	@Override
+
+    public static final String ARG_IDS = "ids";
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		new ClearAsyncTask().execute();
+
+        final List<String> ids = getIntent().getStringArrayListExtra(ARG_IDS);
+
+        //this is pretty gross
+        if(ids != null && ids.size() > 0) {
+            Observable.create(new Observable.OnSubscribe<Void>() {
+                @Override
+                public void call(Subscriber<? super Void> subscriber) {
+                    Session session = Session.openActiveSessionFromCache(getApplicationContext());
+                    if (session != null && session.isOpened()) {
+                        Bundle args = new Bundle();
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0, j = ids.size(); i < j; i++) {
+                            sb.append(ids.get(i));
+                            if (i < (j - 1)) {
+                                sb.append(",");
+                            }
+                        }
+                        args.putString("notification_ids", sb.toString());
+                        Request req = new Request();
+                        req.setSession(session);
+                        req.setRestMethod("notifications.markRead");
+                        req.setHttpMethod(HttpMethod.POST);
+                        req.setParameters(args);
+                        req.executeAndWait();
+                    }
+
+                }
+            }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Void>() {
+                        @Override
+                        public void call(Void aVoid) {
+
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            Crashlytics.logException(throwable);
+                        }
+                    });
+        }
 
         String uri = getIntent().getStringExtra(FacebookDashService.LAUNCH_INTENT);
         if(!TextUtils.isEmpty(uri)) {
@@ -54,55 +94,5 @@ public final class ClearActivity extends Activity {
                 Crashlytics.logException(e);
             }
         }
-	}
-
-	private class ClearAsyncTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			Request request = new Request();
-			Session session = Session.openActiveSessionFromCache(getApplicationContext());
-			if(session.isClosed()) {
-				return null;
-			}
-			request.setSession(session);
-			request.setGraphPath("me/notifications");
-			Bundle parameters = new Bundle();
-			parameters.putString("fields", "id");
-			request.setParameters(parameters);
-			Response resp = request.executeAndWait();
-			List<String> toClear = new ArrayList<>();
-			try {
-				if(resp.getError() == null && resp.getConnection().getResponseCode() == 200) {
-					GraphObject object = resp.getGraphObject();
-					JSONArray jsonArray = object.getInnerJSONObject().getJSONArray("data");
-					for(int i=0, j=jsonArray.length(); i<j; i++) {
-						JSONObject notification = jsonArray.getJSONObject(i);
-						String[] splitIds = notification.getString("id").split("_");
-						toClear.add(splitIds[splitIds.length-1]);
-					}
-				}
-			} catch(Exception e) {
-				Crashlytics.logException(e);
-			}
-			if(toClear.size() > 0) {
-				Bundle args = new Bundle();
-				StringBuilder sb = new StringBuilder();
-				for(int i=0, j = toClear.size(); i<j; i++) {
-					sb.append(toClear.get(i));
-					if(i < (j-1)) {
-						sb.append(",");
-					}
-				}
-				args.putString("notification_ids", sb.toString());
-				Request req = new Request();
-				req.setSession(session);
-				req.setRestMethod("notifications.markRead");
-				req.setHttpMethod(HttpMethod.POST);
-				req.setParameters(args);
-				req.executeAndWait();
-			}
-			return null;
-		}
 	}
 }

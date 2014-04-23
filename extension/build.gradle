@@ -32,7 +32,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
@@ -45,6 +45,7 @@ android {
 dependencies {
     compile 'com.crashlytics.android:crashlytics:1.+'
     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+    compile 'com.netflix.rxjava:rxjava-android:0.17.6'
     compile project(':facebook-android-sdk')
     compile project(':billing')
 
