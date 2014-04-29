@@ -77,10 +77,7 @@ public class FacebookDashService extends DashClockExtension {
     private ExtensionData createExtensionData() {
         ExtensionData data = new ExtensionData().icon(R.drawable.ic_extension);
         Session session = Session.openActiveSessionFromCache(this);
-        if(!mAppSettings.isLoggedIn() || session == null || !session.isOpened()) {
-            data.expandedTitle(getString(R.string.not_logged_in));
-            data.visible(true);
-        } else if(isOnline()) {
+        if(mAppSettings.isLoggedIn() && session != null && session.isOpened() && isOnline()) {
             NotificationsResponse notificationsResponse = null;
             if(mAppSettings.getShowNotifications()) {
                 notificationsResponse = getNotifications(session);
@@ -120,14 +117,12 @@ public class FacebookDashService extends DashClockExtension {
 
     private String getExpandedTitle(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
         TitleBuilder titleBuilder = new TitleBuilder(notificationsResponse, inboxResponse, getResources());
-        String title = mAppSettings.getShowCondensed() ? titleBuilder.buildCondensed() : titleBuilder.build();
-        return title;
+        return mAppSettings.getShowCondensed() ? titleBuilder.buildCondensed() : titleBuilder.build();
     }
 
     private String getStatus(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
         StatusBuilder statusBuilder = new StatusBuilder(notificationsResponse, inboxResponse);
-        String status = mAppSettings.getShowCondensed() ? statusBuilder.buildCondensed() : statusBuilder.build();
-        return status;
+        return mAppSettings.getShowCondensed() ? statusBuilder.buildCondensed() : statusBuilder.build();
     }
 
     private Intent getIntent(NotificationsResponse notificationsResponse, InboxResponse inboxResponse) {
@@ -177,7 +172,7 @@ public class FacebookDashService extends DashClockExtension {
 
     private Intent getDefaultIntent() {
         Intent theIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("facebook://notifications"));
-        theIntent.setPackage("com.facebook.katanas");
+        theIntent.setPackage("com.facebook.katana");
         if(!AppUtils.isIntentAvailable(this, theIntent)) {
             theIntent = new Intent(Intent.ACTION_VIEW);
         }
@@ -205,8 +200,7 @@ public class FacebookDashService extends DashClockExtension {
 
     private InboxResponse getInbox(Session session) {
         InboxRequest request = new InboxRequest();
-        InboxResponse response = request.execute(session);
-        return response;
+        return request.execute(session);
     }
 
     boolean isOnline() {
