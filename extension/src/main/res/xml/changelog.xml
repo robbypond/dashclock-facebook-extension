@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="1.1.5" versioncode="21">
+        <change>Bugfixes, check github issues for information</change>
+    </release>
+    <release version="1.1.4" versioncode="20">
+        <change>Fixed issue with not launching default Facebook app</change>
+        <change>Change from using unread flag to unseen flag for Inbox</change>
+        <change>Other bugfixes</change>
+    </release>
     <release version="1.1.1" versioncode="17">
         <change>Upgraded thirdparty libs</change>
         <change>Added French translation</change>

@@ -34,7 +34,7 @@ import java.util.Date;
 
 public final class InboxRequest {
     private static final String q = "{\"message\":\"select snippet, snippet_author, updated_time " +
-            "from thread where unread = 1 and viewer_id = me() and folder_id = 0\", " +
+            "from thread where unseen = 1 and viewer_id = me() and folder_id = 0\", " +
             "\"user\":\"select name from user where uid in (SELECT snippet_author FROM " +
             "#message)\"}";
 

@@ -44,12 +44,12 @@ android {
 
 dependencies {
     compile 'com.crashlytics.android:crashlytics:1.+'
-    compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-    compile 'com.netflix.rxjava:rxjava-android:0.17.6'
+    compile 'com.google.android.apps.dashclock:dashclock-api:2.+'
+    compile 'com.netflix.rxjava:rxjava-android:0.18.1'
     compile project(':facebook-android-sdk')
     compile project(':billing')
 
-    androidTestCompile 'junit:junit:4.10'
+    androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.robolectric:robolectric:2.1.+'
     androidTestCompile 'com.squareup:fest-android:1.0.+'
 }
