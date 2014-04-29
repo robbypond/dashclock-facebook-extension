@@ -432,9 +432,12 @@ public class UserSettingsFragment extends FacebookFragment {
                             new ImageRequest.Callback() {
                                 @Override
                                 public void onCompleted(ImageResponse response) {
-                                    processImageResponse(user.getId(), response);
+                                    if (response != null && response.getError() == null && user != null) {
+                                        processImageResponse(user.getId(), response);
+                                    }
                                 }
-                            })
+                            }
+                    )
                     .build();
         } catch (URISyntaxException e) {
         }
